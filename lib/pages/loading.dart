@@ -2,20 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'time.dart';
+import 'package:loading/loading.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
 
 
-class Loading extends StatefulWidget {
+class LoadingScreen extends StatefulWidget {
   @override
   _LoadingState createState() => _LoadingState();
 }
 
-class _LoadingState extends State<Loading> {
+class _LoadingState extends State<LoadingScreen> {
   
 
   void getData() async {
-    GetTime instance = GetTime(flag: 'germ.png', location: 'London', url: 'Europe/London');
+    GetTime instance = GetTime(flag: 'germ.png', location: 'Tahiti', url: 'Pacific/Tahiti');
     await instance.getTime();
-    
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'location':instance.location,
+      'time':instance.time,
+      'flag':instance.flag,
+      'isDay':instance.isDay,
+      
+    });
     
   }
 
@@ -33,7 +41,7 @@ class _LoadingState extends State<Loading> {
           child: Container(
         color: Colors.lightBlue,
         child: Center(
-          child: Loading()
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0),
         ),
       ),
     );
